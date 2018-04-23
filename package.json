@@ -1,0 +1,32 @@
+{
+  "name": "chrogo-corporate-site",
+  "description": "Chrogo corporate site",
+  "version": "1.0.0",
+  "author": "Yu Odajima <odajima.yu@gmail.com>",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "start": "gatsby develop --host localhost --port 8000",
+    "format": "prettier --write 'src/**/*.js' 'src/**/*.jsx'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "gatsby": "^1.9.247",
+    "gatsby-link": "^1.6.40",
+    "gatsby-plugin-react-helmet": "^2.0.10",
+    "gatsby-plugin-sass": "^1.0.26",
+    "gatsby-plugin-styled-components": "^2.0.11",
+    "hamburgers": "^0.9.3",
+    "normalize.css": "^8.0.0",
+    "react": "^15.6.0",
+    "react-hamburgers": "^1.0.0",
+    "react-helmet": "^5.2.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "prettier": "^1.12.0"
+  }
+}
