@@ -2,37 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 
+import Main from '../components/main'
 import Header from '../components/header'
+import BrandName from '../components/brand-name'
+import Hamburger from '../components/hamburger'
 import './index.scss'
-
-const Layout = ({ children, data }) => (
-  <div>
-    <Helmet
-      title={data.site.siteMetadata.title}
-      meta={[
-        { name: 'description', content: 'Sample' },
-        { name: 'keywords', content: 'sample, something' },
-      ]}
-    />
-    <Header siteTitle={data.site.siteMetadata.title} />
-    <div
-      style={{
-        margin: '0 auto',
-        maxWidth: 960,
-        padding: '0px 1.0875rem 1.45rem',
-        paddingTop: 0,
-      }}
-    >
-      {children()}
-    </div>
-  </div>
-)
-
-Layout.propTypes = {
-  children: PropTypes.func,
-}
-
-export default Layout
 
 export const query = graphql`
   query SiteTitleQuery {
@@ -41,5 +15,51 @@ export const query = graphql`
         title
       }
     }
+    dataYaml {
+      corporate {
+        name
+      }
+    }
   }
 `
+
+export default class Layout extends React.Component {
+  static propTypes = {
+    children: PropTypes.func.isRequired,
+    data: PropTypes.shape({
+      site: PropTypes.shape({
+        siteMetadata: PropTypes.object.isRequired,
+      }).isRequired,
+      dataYaml: PropTypes.shape({
+        corporate: PropTypes.object.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }
+
+  state = {
+    active: false,
+  }
+
+  render = () => (
+    <Main>
+      <Helmet
+        title={this.props.data.site.siteMetadata.title}
+        meta={[
+          { name: 'description', content: 'Sample' },
+          { name: 'keywords', content: 'sample, something' },
+        ]}
+      />
+
+      <Header>
+        <BrandName>
+          {this.props.data.dataYaml.corporate.name}
+        </BrandName>
+        <Hamburger
+          active={this.state.active}
+          onClick={() => this.setState({ active: !this.state.active })}
+        />
+      </Header>
+      {this.props.children()}
+    </Main>
+  )
+}
