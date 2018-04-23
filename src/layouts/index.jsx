@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
+import Link from 'gatsby-link'
+import PageTransition from 'react-router-page-transition'
 
 import Main from '../components/main'
 import Header from '../components/header'
@@ -52,14 +54,17 @@ export default class Layout extends React.Component {
 
       <Header>
         <BrandName>
-          {this.props.data.dataYaml.corporate.name}
+          <Link to='/'>{this.props.data.dataYaml.corporate.name}</Link>
         </BrandName>
         <Hamburger
           active={this.state.active}
           onClick={() => this.setState({ active: !this.state.active })}
         />
       </Header>
-      {this.props.children()}
+
+      <PageTransition>
+        {this.props.children()}
+      </PageTransition>
     </Main>
   )
 }
