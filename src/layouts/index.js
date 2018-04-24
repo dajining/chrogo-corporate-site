@@ -2,59 +2,55 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import Link from 'gatsby-link'
+import {Grid, Row} from 'react-styled-flexboxgrid'
+import {ThemeProvider} from 'styled-components'
 
-import BrandName from '../components/brand-name'
 import Hamburger from '../components/hamburger'
-import Header from '../components/header'
-import Main from '../components/main'
-import './index.scss'
+import theme from './theme'
+import './index.sass'
 
-export default class Layout extends React.Component {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-    data: PropTypes.shape({
-      site: PropTypes.shape({
-        siteMetadata: PropTypes.object.isRequired,
-      }).isRequired,
-      dataYaml: PropTypes.shape({
-        corporate: PropTypes.object.isRequired,
-      }).isRequired,
-    }).isRequired,
-  }
+const Layout = ({ children, data }) => (
+  <ThemeProvider theme={theme}>
+    <Grid fluid>
+      <Helmet>
+        <title>{data.site.siteMetadata.title}</title>
+        <meta name='description' content='description' />
+      </Helmet>
 
-  render () {
-    const activeMenu = this.props.location.pathname.includes('menu')
-
-    return (
-      <div>
-        <Helmet
-          title={this.props.data.site.siteMetadata.title}
-          meta={[
-            { name: 'description', content: 'Sample' },
-            { name: 'keywords', content: 'sample, something' },
-          ]}
-        />
-
-        <Header>
+      <header>
+        <Row middle='xs' between='xs' xs={12}>
           <Link to='/'>
-            <BrandName>
-              {this.props.data.dataYaml.corporate.name}
-            </BrandName>
+            <h1>{data.dataYaml.corporate.name}</h1>
           </Link>
-
-          <Link to={activeMenu ? '/' : '/menu'}>
-            <Hamburger active={activeMenu} />
+          <Link to='/'>
+            <Hamburger />
           </Link>
-        </Header>
+        </Row>
+      </header>
 
-        {this.props.children()}
-      </div>
-    )
-  }
+      <main>
+        {children()}
+      </main>
+    </Grid>
+  </ThemeProvider>
+)
+
+Layout.propTypes = {
+  children: PropTypes.func,
+  data: PropTypes.shape({
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.object.isRequired,
+    }).isRequired,
+    dataYaml: PropTypes.shape({
+      corporate: PropTypes.object.isRequired,
+    }).isRequired,
+  }).isRequired,
 }
 
+export default Layout
+
 export const query = graphql`
-  query SiteTitleQuery {
+  query LayoutQuery {
     site {
       siteMetadata {
         title
